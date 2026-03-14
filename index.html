@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Local Shop</title>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial, sans-serif;
+}
+
+body{
+background:#f6f6f6;
+color:#333;
+}
+
+/* HERO */
+
+.hero{
+height:90vh;
+background:url('https://i.ibb.co/bR8R0BVV/IMG-0895.jpg') center/cover no-repeat;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.hero-box{
+background:rgba(0,0,0,0.55);
+padding:30px;
+border-radius:10px;
+color:white;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+margin:10px 0 20px;
+font-size:18px;
+}
+
+.btn{
+background:#ff7a00;
+color:white;
+padding:12px 22px;
+border:none;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+}
+
+.btn:hover{
+background:#e96c00;
+}
+
+/* PRODUCTS */
+
+.products{
+padding:50px 20px;
+text-align:center;
+}
+
+.carousel{
+display:flex;
+gap:20px;
+overflow-x:auto;
+padding:20px;
+scroll-snap-type:x mandatory;
+}
+
+.product{
+min-width:240px;
+background:white;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+padding:15px;
+scroll-snap-align:center;
+}
+
+.product img{
+width:100%;
+border-radius:10px;
+}
+
+.product h3{
+margin:10px 0;
+}
+
+/* CART */
+
+.cart{
+background:white;
+margin:30px 20px;
+padding:25px;
+border-radius:12px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.cart-items{
+margin-bottom:10px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+/* WHATSAPP */
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+font-size:26px;
+padding:15px;
+border-radius:50%;
+text-decoration:none;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-box">
+
+<h1>The Local Shop</h1>
+<p>Fresh Finds, Best Prices</p>
+
+<button class="btn"
+onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+Shop Now
+</button>
+
+</div>
+
+</section>
+
+
+<!-- PRODUCTS -->
+
+<section id="products" class="products">
+
+<h2>Products</h2>
+
+<div class="carousel">
+
+<div class="product">
+
+<img src="https://i.ibb.co/yFr0P33p/image.jpg">
+
+<h3>Product 1</h3>
+
+<button class="btn" onclick="addToCart('Product 1')">Add to Cart</button>
+
+</div>
+
+
+<div class="product">
+
+<img src="https://i.ibb.co/chKzpf73/image.jpg">
+
+<h3>Product 2</h3>
+
+<button class="btn" onclick="addToCart('Product 2')">Add to Cart</button>
+
+</div>
+
+
+<div class="product">
+
+<img src="https://i.ibb.co/PG9tSjFw/image.jpg">
+
+<h3>Product 3</h3>
+
+<button class="btn" onclick="addToCart('Product 3')">Add to Cart</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- CART -->
+
+<section class="cart">
+
+<h2>Your Order</h2>
+
+<div class="cart-items" id="cartItems">
+No items yet
+</div>
+
+<input id="name" placeholder="Customer Name">
+
+<input id="phone" placeholder="Phone Number">
+
+<button class="btn" onclick="sendOrder()">Send Order</button>
+
+</section>
+
+
+
+<!-- WHATSAPP -->
+
+<a class="whatsapp"
+href="https://wa.me/PHONE_NUMBER"
+target="_blank">💬</a>
+
+
+
+<script>
+
+/* EMAILJS INIT */
+
+(function(){
+emailjs.init("YOUR_PUBLIC_KEY");
+})();
+
+
+let cart=[];
+
+
+function addToCart(product){
+
+cart.push(product);
+
+document.getElementById("cartItems").innerText =
+"Items: " + cart.join(", ");
+
+}
+
+
+
+/* SEND ORDER */
+
+function sendOrder(){
+
+let name=document.getElementById("name").value;
+
+let phone=document.getElementById("phone").value;
+
+let items=cart.join(", ");
+
+
+if(!name || !phone || cart.length===0){
+
+alert("Please fill details and add products");
+
+return;
+
+}
+
+
+let templateParams={
+
+customer_name:name,
+
+phone:phone,
+
+items:items,
+
+email:"OWNER_EMAIL"
+
+};
+
+
+emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",templateParams)
+
+.then(function(){
+
+alert("Order sent successfully!");
+
+cart=[];
+document.getElementById("cartItems").innerText="No items yet";
+
+});
+
+}
+
+</script>
+
+</body>
+  </html>
